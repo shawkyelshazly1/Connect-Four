@@ -33,8 +33,13 @@ class ConnectFour(object):
     def check_winner(self):
         if self.match_H() != None:
             print('Winner is: Player ' + str(self.winner))
+            self.game_over = True
         elif self.match_v() != None:
             print('Winner is: Player ' + str(self.winner))
+            self.game_over = True
+        elif self.match_diagonal() != None:
+            print('Winner is: Player ' + str(self.winner))
+            self.game_over = True
 
     def match_H(self):
         for row in range(len(self.board)-1, -1, -1):
@@ -66,17 +71,36 @@ class ConnectFour(object):
             for row in range(len(self.board)-1, -1, -1):
                 temp_list.append(self.board[row][col])
 
-            result = self.check_row_match(temp_list)
+            if self.check_row_match(temp_list) != None:
+                return self.winner
 
-            if result != None:
-                self.winner = result
-                return result
         return None
+
+    def match_diagonal(self):
+        rows = len(self.board)
+        columns = len(self.board[0])
+        for d in range(rows+columns-1):
+            temp_row = []
+            for x in range(max(0, d-columns+1), min(rows, d+1)):
+                temp_row.insert(0, self.board[x][d-x])
+
+            if len(temp_row) >= 4:
+                if self.check_row_match(temp_row) != None:
+                    return self.winner
+
+        for d in range(rows+columns-1):
+            temp_row = []
+            for x in range(min(rows-1, d), max(-1, d-columns), -1):
+                temp_row.append(self.board[x][x-d-1])
+
+            if len(temp_row) >= 4:
+                if self.check_row_match(temp_row) != None:
+                    return self.winner
 
     def check_row_match(self, row):
         if not self.is_empty_row_v(row):
             pointer1 = 0
-            pointer2 = 0
+            pointer2 = 1
             counter = 1
 
             while pointer1 < len(row) and pointer2 < len(row):
@@ -89,6 +113,7 @@ class ConnectFour(object):
                     counter = 1
 
                 if counter == 4:
+                    self.winner = row[pointer1]
                     return row[pointer1]
         return None
 
@@ -106,3 +131,19 @@ class ConnectFour(object):
 
     def get_current_player(self):
         return self.current_player
+
+    def get_game_status(self):
+        return self.game_over
+
+    def reset_game(self):
+        self.game_over = False
+        self.current_player = 1
+        self.player1_moves = 0
+        self.player2_moves = 0
+        self.winner = 0
+        self.board = [[0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0],
+                      [0, 0, 0, 0, 0, 0, 0]]
