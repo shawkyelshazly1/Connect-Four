@@ -54,14 +54,26 @@ class Game(object):
     def where_to_draw(self, x_coord):
         column = x_coord//self.column_width
         row = self.connectFourObj.next_spot(column)
+
         if row != None:
-            start_coords = ((column*self.column_width), (row*self.row_height))
-            end_coords = ((column*self.column_width)+self.column_width,
-                          (row*self.row_height)+self.row_height)
-            self.draw_circle('red', start_coords, end_coords)
-            print('Drawnnnn')
+            x1, y1 = column*self.column_width, row*self.row_height
+            x2, y2 = (column*self.column_width) + \
+                self.column_width, (row*self.row_height)+self.row_height
+
+            if self.connectFourObj.get_current_player() == 1:
+                self.draw_circle('red', (x1, y1), (x2, y2))
+                self.connectFourObj.switch_player()
+                print('Drawnnnn Red')
+            else:
+                self.draw_circle('blue', (x1, y1), (x2, y2))
+                self.connectFourObj.switch_player()
+                print('Drawnnnn Blue')
+
         else:
             pass
+
+    # TODO: Widget: take players names, Start Game
+    # TODO: Widget: Show Winner With Blury BG
 
 
 root = Tk()
