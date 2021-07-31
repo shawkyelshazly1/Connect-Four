@@ -40,6 +40,8 @@ class ConnectFour(object):
         elif self.match_diagonal() != None:
             print('Winner is: Player ' + str(self.winner))
             self.game_over = True
+        elif self.checkTie() != None:
+            self.game_over = True
 
     def match_H(self):
         for row in range(len(self.board)-1, -1, -1):
@@ -147,3 +149,10 @@ class ConnectFour(object):
                       [0, 0, 0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0, 0, 0],
                       [0, 0, 0, 0, 0, 0, 0]]
+
+    def checkTie(self):
+        if (self.player1_moves + self.player2_moves) == (len(self.board) * len(self.board[0])):
+            self.winner = 0
+            return self.winner
+
+        return None

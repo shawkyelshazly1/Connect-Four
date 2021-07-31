@@ -118,20 +118,25 @@ class Game(object):
                 self.root, width=self.canvas_width, height=self.canvas_height, background='#a7e6e8')
             self.game_over_canvas.grid(
                 column=0, row=0,  columnspan=7, rowspan=6, sticky=(N, S, E, W))
+            if self.connectFourObj.winner == 0:
+                Label(self.game_over_canvas,
+                      text="It's A Tie", font=('Helvetica', 50, BOLD), background='#a7e6e8', fg='brown').place(relx=0.5, rely=0.4, anchor=CENTER)
+            else:
+                Label(self.game_over_canvas,
+                      text='Winner Is:', font=('Helvetica', 30), background='#a7e6e8').place(relx=0.45, rely=0.4, anchor=CENTER, y=70, x=-50)
+                if self.connectFourObj.winner == 1:
+                    Label(self.game_over_canvas,
+                          text='Player 1', font=('Helvetica', 30, BOLD), background='#a7e6e8', fg='red').place(relx=0.55, rely=0.4, anchor=CENTER, y=70, x=50)
+                elif self.connectFourObj.winner == 2:
+                    Label(self.game_over_canvas,
+                          text='Player 2', font=('Helvetica', 30, BOLD), background='#a7e6e8', fg='blue').place(relx=0.55, rely=0.4, anchor=CENTER, y=70, x=50)
 
-            Label(self.game_over_canvas,
-                  text='Winner Is:', font=('Helvetica', 30), background='#a7e6e8').place(relx=0.45, rely=0.4, anchor=CENTER, y=70, x=-50)
-            if self.connectFourObj.winner == 1:
-                Label(self.game_over_canvas,
-                      text='Player 1', font=('Helvetica', 30, BOLD), background='#a7e6e8', fg='red').place(relx=0.55, rely=0.4, anchor=CENTER, y=70, x=50)
-            elif self.connectFourObj.winner == 2:
-                Label(self.game_over_canvas,
-                      text='Player 2', font=('Helvetica', 30, BOLD), background='#a7e6e8', fg='blue').place(relx=0.55, rely=0.4, anchor=CENTER, y=70, x=50)
             tkinter.Misc.lift(self.game_over_canvas)
 
             self.game_over_canvas.bind(
                 '<Button-1>', lambda e: tkinter.Misc.lift(self.start_window_canvas))
             self.connectFourObj.reset_game()
+
 
 
 root = Tk()
